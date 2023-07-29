@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  utility:
+    image: utility
+    ports:
+      - '1234:3000'
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.10
+    command: tail -f /dev/null  # бесконечный процесс для того, что бы контейнер не закрывался
+    container_name: utility
+    volumes:
+      # директория утилиты и сервера
+      - "./utility_server.py:/utility/utility_server.py"
+      - "./utility.py:/utility/utility.py"
+      - "./requirements.txt:/utility/requirements.txt"
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
